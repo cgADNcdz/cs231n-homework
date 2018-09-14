@@ -1,0 +1,11 @@
+1.本次作业代码部分参考了github上别人完成的内容
+2.cs231n课程网站有详细讲解：http://cs231n.github.io/
+3.本次作业代码结构与作业要求有出入：
+    ./KNN.py是实现了KNN分类
+    ./Tools.py是一部分公用的工具,在各test。。。中会调用
+    ./SVM.py、softmax.py是svm和softmax的核心部分，主要是损失和梯度的计算
+    ./liner_classifiers_total.py 是svm和softmax的汇总
+    ./test_svm、test_softmax是图片分类的具体实现（相当于main）
+    ./Two_layer_Neural_Net.py是两层全连接神经网络的核心部分
+    ./test_neural_net.py是神经网络图片分类的具体实现
+4.测试数据来自cifar-10
