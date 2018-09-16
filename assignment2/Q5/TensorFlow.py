@@ -502,11 +502,100 @@ train_part2(three_layer_convnet,three_layer_convnet_init,learning_rate)
 
 #######################################################  part3 Keras Model API
 #####################################################
-class TwoLayerFC(tf.kertas.Model):
-    def __init__():
+##### object-oriented API
+class TwoLayerFC(tf.keras.Model):
+    
+    def __init__(self, hidden_size, num_classes):
+        super().__init__()        
+        initializer = tf.variance_scaling_initializer(scale=2.0)
+        self.fc1 = tf.layers.Dense(hidden_size, activation=tf.nn.relu,
+                                   kernel_initializer=initializer)
+        self.fc2 = tf.layers.Dense(num_classes,
+                                   kernel_initializer=initializer)
+        
+    def call(self, x, training=None):
+        x = tf.layers.flatten(x)
+        x = self.fc1(x)
+        x = self.fc2(x)
+        return x
 
 
+def test_TwoLayerFC():
+    """ A small unit test to exercise the TwoLayerFC model above. """
+    tf.reset_default_graph()
+    input_size, hidden_size, num_classes = 50, 42, 10
 
+    # As usual in TensorFlow, we first need to define our computational graph.
+    # To this end we first construct a TwoLayerFC object, then use it to construct
+    # the scores Tensor.
+    model = TwoLayerFC(hidden_size, num_classes)
+    with tf.device(device):
+        x = tf.zeros((64, input_size))
+        scores = model(x)
+
+    # Now that our computational graph has been defined we can run the graph
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        scores_np = sess.run(scores)
+        print(scores_np.shape)
+        
+#test_TwoLayerFC()
+
+####### functional API
+def two_layer_fc_functional(inputs, hidden_size, num_classes):     
+    initializer = tf.variance_scaling_initializer(scale=2.0)
+    flattened_inputs = tf.layers.flatten(inputs)
+    fc1_output = tf.layers.dense(flattened_inputs, hidden_size, activation=tf.nn.relu,
+                                 kernel_initializer=initializer)
+    scores = tf.layers.dense(fc1_output, num_classes,
+                             kernel_initializer=initializer)
+    return scores
+
+def test_two_layer_fc_functional():
+    """ A small unit test to exercise the TwoLayerFC model above. """
+    tf.reset_default_graph()
+    input_size, hidden_size, num_classes = 50, 42, 10
+
+    # As usual in TensorFlow, we first need to define our computational graph.
+    # To this end we first construct a two layer network graph by calling the
+    # two_layer_network() function. This function constructs the computation
+    # graph and outputs the score tensor.
+    with tf.device(device):
+        x = tf.zeros((64, input_size))
+        scores = two_layer_fc_functional(x, hidden_size, num_classes)
+
+    # Now that our computational graph has been defined we can run the graph
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        scores_np = sess.run(scores)
+        print(scores_np.shape)
+        
+#test_two_layer_fc_functional()
+
+###### three-layer convNet
+class ThreeLayerConvNet(tf.keras.Model):
+    def __init__(self, channel_1, channel_2, num_classes):
+        super().__init__()
+        ########################################################################
+        # TODO: Implement the __init__ method for a three-layer ConvNet. You   #
+        # should instantiate layer objects to be used in the forward pass.     #
+        ########################################################################
+        
+        ########################################################################
+        #                           END OF YOUR CODE                           #
+        ########################################################################
+        
+    def call(self, x, training=None):
+        scores = None
+        ########################################################################
+        # TODO: Implement the forward pass for a three-layer ConvNet. You      #
+        # should use the layer objects defined in the __init__ method.         #
+        ########################################################################
+        pass
+        ########################################################################
+        #                           END OF YOUR CODE                           #
+        ########################################################################        
+        return scores
 
 
 
